@@ -8,8 +8,15 @@ on:
       - Jellyfin.Plugin.ThePornDB/**
       - .github/**
   pull_request:
-    branches: 
-      -main
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a release'
+        required: false
+        default: 'true'
+        type: boolean
 
 jobs:
   debug-jellyfin:
@@ -103,3 +110,45 @@ jobs:
           files: |
             **/Jellyfin.Plugin.ThePornDB.zip
             **/Emby.Plugins.ThePornDB.zip
+
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) || (github.event_name == 'workflow_dispatch' && inputs.create_release == true) }}
+    needs: [jellyfin, emby]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Get version from csproj
+        id: get_version
+        run: |
+          VERSION=$(grep -oP '(?<=<AssemblyVersion>)[^<]+' Jellyfin.Plugin.ThePornDB/ThePornDB.csproj)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Calculate checksums
+        id: checksums
+        run: |
+          JELLYFIN_MD5=$(md5sum Jellyfin/Jellyfin.Plugin.ThePornDB.zip | cut -d ' ' -f 1)
+          EMBY_MD5=$(md5sum Emby/Emby.Plugins.ThePornDB.zip | cut -d ' ' -f 1)
+          echo "jellyfin_md5=$JELLYFIN_MD5" >> $GITHUB_OUTPUT
+          echo "emby_md5=$EMBY_MD5" >> $GITHUB_OUTPUT
+          echo "Jellyfin MD5: $JELLYFIN_MD5"
+          echo "Emby MD5: $EMBY_MD5"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: ${{ steps.get_version.outputs.version }}
+          body: |
+            ## Checksums
+            - Jellyfin: `${{ steps.checksums.outputs.jellyfin_md5 }}`
+            - Emby: `${{ steps.checksums.outputs.emby_md5 }}`
+          files: |
+            Jellyfin/Jellyfin.Plugin.ThePornDB.zip
+            Emby/Emby.Plugins.ThePornDB.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
