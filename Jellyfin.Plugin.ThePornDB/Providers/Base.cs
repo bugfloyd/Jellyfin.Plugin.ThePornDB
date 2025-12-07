@@ -273,6 +273,31 @@ namespace ThePornDB.Providers
                     tags = genres.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(o => o).ToList();
                 }
 
+                // Apply tag filtering based on blacklist/whitelist mode
+                if (Plugin.Instance.Configuration.TagFilterMode != TagFilterMode.Disabled && !string.IsNullOrWhiteSpace(Plugin.Instance.Configuration.TagFilterList))
+                {
+                    var filterList = Plugin.Instance.Configuration.TagFilterList
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(t => t.Trim())
+                        .Where(t => !string.IsNullOrEmpty(t))
+                        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                    if (filterList.Count > 0)
+                    {
+                        switch (Plugin.Instance.Configuration.TagFilterMode)
+                        {
+                            case TagFilterMode.Blacklist:
+                                // Remove tags that are in the blacklist
+                                tags = tags.Where(t => !filterList.Contains(t)).ToList();
+                                break;
+                            case TagFilterMode.Whitelist:
+                                // Keep only tags that are in the whitelist
+                                tags = tags.Where(t => filterList.Contains(t)).ToList();
+                                break;
+                        }
+                    }
+                }
+
                 switch (Plugin.Instance.Configuration.TagStyle)
                 {
                     case TagStyle.Disabled:

@@ -40,6 +40,19 @@
                             <option value="Disabled">Disabled</option>
                         </select>
                     </div>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="TagFilterMode">Tag Filter Mode</label>
+                        <select is="emby-select" id="TagFilterMode" name="TagFilterMode" class="emby-select-withcolor emby-select">
+                            <option value="Disabled">Disabled</option>
+                            <option value="Blacklist">Blacklist</option>
+                            <option value="Whitelist">Whitelist</option>
+                        </select>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="TagFilterList">Tag Filter List (comma-separated)</label>
+                        <textarea is="emby-textarea" id="TagFilterList" class="textarea-mono emby-textarea" rows="3" style="overflow-y: hidden; height: 60px; width: 100%;" placeholder="Tag1, Tag2, Tag3">
+                        </textarea>
+                    </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
                             <input id="AddCollectionOnSite" name="AddCollectionOnSite" type="checkbox" is="emby-checkbox" />
@@ -190,6 +203,8 @@
                     $('#UseOSHash').prop('checked', config.UseOSHash);
                     $('#OrderStyle').val(config.OrderStyle).change();
                     $('#TagStyle').val(config.TagStyle).change();
+                    $('#TagFilterMode').val(config.TagFilterMode).change();
+                    $('#TagFilterList').val(config.TagFilterList).change();
                     $('#AddCollectionOnSite').prop('checked', config.AddCollectionOnSite);
                     $('#CollectionMinSize').val(config.CollectionMinSize).change();
                     $('#AddCollectionToCollections').prop('checked', config.AddCollectionToCollections);
@@ -223,6 +238,8 @@
                     config.UseOSHash = $('#UseOSHash').prop('checked');
                     config.OrderStyle = $('#OrderStyle').val();
                     config.TagStyle = $('#TagStyle').val();
+                    config.TagFilterMode = $('#TagFilterMode').val();
+                    config.TagFilterList = $('#TagFilterList').val();
                     config.AddCollectionOnSite = $('#AddCollectionOnSite').prop('checked');
                     config.CollectionMinSize = $('#CollectionMinSize').val();
                     config.AddCollectionToCollections = $('#AddCollectionToCollections').prop('checked');
