@@ -9,7 +9,7 @@
         "imageUrl": "https://theporndb.net/images/logo.png",
         "versions": [
             {
-                "checksum": "",
+                "checksum": "3f67a426695f03febffdc3d7606ba45f",
                 "changelog": "Added tag blacklist/whitelist filtering",
                 "targetAbi": "10.11.0.0",
                 "sourceUrl": "https://github.com/bugfloyd/Jellyfin.Plugin.ThePornDB/releases/download/1.6.0.12/Jellyfin.Plugin.ThePornDB.zip",
