@@ -33,14 +33,6 @@
                         </select>
                     </div>
                     <div class="selectContainer">
-                        <label class="selectLabel" for="TagStyle">Tag Style</label>
-                        <select is="emby-select" id="TagStyle" name="TagStyle" class="emby-select-withcolor emby-select">
-                            <option value="Genre">Genre</option>
-                            <option value="Tag">Tag</option>
-                            <option value="Disabled">Disabled</option>
-                        </select>
-                    </div>
-                    <div class="selectContainer">
                         <label class="selectLabel" for="TagFilterMode">Tag Filter Mode</label>
                         <select is="emby-select" id="TagFilterMode" name="TagFilterMode" class="emby-select-withcolor emby-select">
                             <option value="Disabled">Disabled</option>
@@ -52,6 +44,19 @@
                         <label class="inputLabel inputLabelUnfocused" for="TagFilterList">Tag Filter List (comma-separated)</label>
                         <textarea is="emby-textarea" id="TagFilterList" class="textarea-mono emby-textarea" rows="3" style="overflow-y: hidden; height: 60px; width: 100%;" placeholder="Tag1, Tag2, Tag3">
                         </textarea>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="TagMappings">Tag Mappings (one per line: NewTag: original1, original2, ...)</label>
+                        <textarea is="emby-textarea" id="TagMappings" class="textarea-mono emby-textarea" rows="5" style="overflow-y: auto; height: 100px; width: 100%;" placeholder="School: school, schools, classroom, student&#10;Outdoor: outdoor, outside, public">
+                        </textarea>
+                    </div>
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="TagStyle">Tag Style</label>
+                        <select is="emby-select" id="TagStyle" name="TagStyle" class="emby-select-withcolor emby-select">
+                            <option value="Genre">Genre</option>
+                            <option value="Tag">Tag</option>
+                            <option value="Disabled">Disabled</option>
+                        </select>
                     </div>
                     <div class="checkboxContainer checkboxContainer-withDescripton">
                         <label class="emby-checkbox-label">
@@ -205,6 +210,7 @@
                     $('#TagStyle').val(config.TagStyle).change();
                     $('#TagFilterMode').val(config.TagFilterMode).change();
                     $('#TagFilterList').val(config.TagFilterList).change();
+                    $('#TagMappings').val(config.TagMappings).change();
                     $('#AddCollectionOnSite').prop('checked', config.AddCollectionOnSite);
                     $('#CollectionMinSize').val(config.CollectionMinSize).change();
                     $('#AddCollectionToCollections').prop('checked', config.AddCollectionToCollections);
@@ -240,6 +246,7 @@
                     config.TagStyle = $('#TagStyle').val();
                     config.TagFilterMode = $('#TagFilterMode').val();
                     config.TagFilterList = $('#TagFilterList').val();
+                    config.TagMappings = $('#TagMappings').val();
                     config.AddCollectionOnSite = $('#AddCollectionOnSite').prop('checked');
                     config.CollectionMinSize = $('#CollectionMinSize').val();
                     config.AddCollectionToCollections = $('#AddCollectionToCollections').prop('checked');

@@ -298,6 +298,56 @@ namespace ThePornDB.Providers
                     }
                 }
 
+                // Apply tag mappings (merge multiple tags into one)
+                if (!string.IsNullOrWhiteSpace(Plugin.Instance.Configuration.TagMappings))
+                {
+                    var mappingLines = Plugin.Instance.Configuration.TagMappings
+                        .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var line in mappingLines)
+                    {
+                        var colonIndex = line.IndexOf(':');
+                        if (colonIndex <= 0)
+                        {
+                            continue;
+                        }
+
+                        var newTag = line.Substring(0, colonIndex).Trim();
+                        if (string.IsNullOrEmpty(newTag))
+                        {
+                            continue;
+                        }
+
+                        var originalTags = line.Substring(colonIndex + 1)
+                            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(t => t.Trim())
+                            .Where(t => !string.IsNullOrEmpty(t))
+                            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                        if (originalTags.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        // Check if any of the original tags exist in the current tags
+                        var matchingTags = tags.Where(t => originalTags.Contains(t)).ToList();
+                        if (matchingTags.Count > 0)
+                        {
+                            // Remove all matching original tags
+                            tags = tags.Where(t => !originalTags.Contains(t)).ToList();
+
+                            // Add the new tag if not already present
+                            if (!tags.Contains(newTag, StringComparer.OrdinalIgnoreCase))
+                            {
+                                tags.Add(newTag);
+                            }
+                        }
+                    }
+
+                    // Re-sort after merging
+                    tags = tags.OrderBy(o => o).ToList();
+                }
+
                 switch (Plugin.Instance.Configuration.TagStyle)
                 {
                     case TagStyle.Disabled:

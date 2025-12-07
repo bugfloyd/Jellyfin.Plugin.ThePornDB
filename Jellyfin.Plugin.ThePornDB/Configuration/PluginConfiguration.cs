@@ -86,6 +86,7 @@ namespace ThePornDB.Configuration
             this.TagStyle = TagStyle.Genre;
             this.TagFilterMode = TagFilterMode.Disabled;
             this.TagFilterList = string.Empty;
+            this.TagMappings = string.Empty;
 
             this.AddCollectionOnSite = false;
 
@@ -134,6 +135,8 @@ namespace ThePornDB.Configuration
         public TagFilterMode TagFilterMode { get; set; }
 
         public string TagFilterList { get; set; }
+
+        public string TagMappings { get; set; }
 
         public bool AddCollectionOnSite { get; set; }
 
