@@ -9,6 +9,14 @@
         "imageUrl": "https://theporndb.net/images/logo.png",
         "versions": [
             {
+                "checksum": "5988fd1737386a29676b62076b95a164",
+                "changelog": "Added tag filtering with blacklist/whitelist mode; Added tag mappings to merge multiple tags into one",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/bugfloyd/Jellyfin.Plugin.ThePornDB/releases/download/v1.7.0.0/Jellyfin.Plugin.ThePornDB.zip",
+                "timestamp": "2026-02-11T21:12:00Z",
+                "version": "1.7.0.0"
+            },
+            {
                 "checksum": "8d41de924b78c6873f1f987b4c04a5b7",
                 "changelog": "Added Support Jellyfin 10.11; Added Support Emby 4.9; Minor Changes",
                 "targetAbi": "10.11.0.0",
